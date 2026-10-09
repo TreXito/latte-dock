@@ -91,6 +91,10 @@ void ContainmentInterface::identifyShortcutsHost()
 
 void ContainmentInterface::identifyMethods()
 {
+    if (!m_shortcutsHost) {
+        return;
+    }
+
     int aeIndex = m_shortcutsHost->metaObject()->indexOfMethod("activateEntryAtIndex(QVariant)");
     int niIndex = m_shortcutsHost->metaObject()->indexOfMethod("newInstanceForEntryAtIndex(QVariant)");
     int sbIndex = m_shortcutsHost->metaObject()->indexOfMethod("setShowAppletShortcutBadges(QVariant,QVariant,QVariant,QVariant)");
@@ -563,6 +567,11 @@ void ContainmentInterface::setLayoutManager(QObject *manager)
 
     m_layoutManager = manager;
 
+    if (!m_layoutManager) {
+        emit layoutManagerChanged();
+        return;
+    }
+
     // applets order
     int metaorderindex = m_layoutManager->metaObject()->indexOfProperty("order");
     if (metaorderindex >= 0) {
@@ -627,6 +636,10 @@ void ContainmentInterface::addApplet(const QString &pluginId)
 
 void ContainmentInterface::addApplet(QObject *metadata, int x, int y)
 {
+    if (!m_plasmoid) {
+        return;
+    }
+
     int processmimedataindex = m_plasmoid->metaObject()->indexOfMethod("processMimeData(QObject*,int,int)");
     QMetaMethod processmethod = m_plasmoid->metaObject()->method(processmimedataindex);
     processmethod.invoke(m_plasmoid,

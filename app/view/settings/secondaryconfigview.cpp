@@ -207,7 +207,7 @@ void SecondaryConfigView::focusOutEvent(QFocusEvent *ev)
 
     const auto parent = qobject_cast<PrimaryConfigView *>(m_parent);
 
-    if (!parent->hasFocus()) {
+    if (parent && !parent->hasFocus()) {
         parent->hideConfigWindow();
     }
 }
