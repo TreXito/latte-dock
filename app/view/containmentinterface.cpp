@@ -947,6 +947,13 @@ KDeclarative::ConfigPropertyMap *ContainmentInterface::appletConfiguration(const
 
     //! set configuration object properly for applets and subcontainments
     if (!isSubContainment) {
+        //! ai can be null while the applet graphic object is not ready yet.
+        //! updateAppletDelayedConfiguration() retries this call later, so it
+        //! must not dereference a null pointer here.
+        if (!ai) {
+            return nullptr;
+        }
+
         int metaconfigindex = ai->metaObject()->indexOfProperty("configuration");
         if (metaconfigindex >=0 ){
             configuration = qobject_cast<KDeclarative::ConfigPropertyMap *>((ai->property("configuration")).value<QObject *>());
