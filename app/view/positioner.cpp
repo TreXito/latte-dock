@@ -498,6 +498,10 @@ void Positioner::syncGeometry()
 
 void Positioner::immediateSyncGeometry()
 {
+    if (!m_view || !m_view->screen()) {
+        return;
+    }
+
     bool found{false};
 
     qDebug() << "immediateSyncGeometry() called...";
@@ -615,6 +619,10 @@ void Positioner::immediateSyncGeometry()
 
 void Positioner::validateDockGeometry()
 {
+    if (!m_view) {
+        return;
+    }
+
     if (m_slideOffset==0 && m_view->geometry() != m_validGeometry) {
         m_validateGeometryTimer.start();
     }

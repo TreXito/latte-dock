@@ -236,7 +236,7 @@ MouseArea {
                 || !wheelActionsEnabled
                 || inBouncingAnimation
                 || !taskItem.abilities.myView.isShownFully){
-
+            wheel.accepted = false
             return;
         }
 
