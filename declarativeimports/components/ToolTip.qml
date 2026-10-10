@@ -4,7 +4,6 @@
 */
 
 import QtQuick 2.6
-import QtQuick.Controls 1.4
 import QtQuick.Templates 2.2 as T
 import org.kde.ksvg 1.0 as KSvg
 import org.kde.plasma.core 2.0 as PlasmaCore

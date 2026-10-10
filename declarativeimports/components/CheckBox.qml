@@ -4,7 +4,6 @@
 */
 
 import org.kde.plasma.components 3.0 as PlasmaComponents
-import "private" as Private
 
 PlasmaComponents.CheckBox {
     property int value: 0
@@ -16,7 +15,4 @@ PlasmaComponents.CheckBox {
             checked = value;
         }
     }
-
-    style: Private.CheckBoxStyle {}
 }
-
