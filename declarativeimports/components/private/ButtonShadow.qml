@@ -17,7 +17,7 @@ Properties:
 **/
 
 import QtQuick 2.1
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.ksvg 1.0 as KSvg
 
 Item {
     id: main
@@ -26,7 +26,7 @@ Item {
     property bool hasOverState: true
     property alias enabledBorders: shadow.enabledBorders
 
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: hover
 
         anchors {
@@ -41,7 +41,7 @@ Item {
         prefix: "hover"
     }
 
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: shadow
 
         anchors {

@@ -259,7 +259,7 @@ Column {
             }
 
             // when minimized, we don't have a preview, so show the icon
-            PlasmaCore.IconItem {
+            Kirigami.Icon {
                 width: parent.width
                 height: thumbnail.height - playbackLoader.realHeight
                 anchors.horizontalCenter: parent.horizontalCenter
