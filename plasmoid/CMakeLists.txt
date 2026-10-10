@@ -7,13 +7,13 @@ set(tasks_SRCS
     plugin/lattetasksplugin.cpp
 )
 
-add_library(lattetasksplugin SHARED ${tasks_SRCS})
+qt_add_library(lattetasksplugin SHARED ${tasks_SRCS})
 
 target_link_libraries(lattetasksplugin
-                      Qt5::Core
-                      Qt5::Qml
-                      KF5::Plasma
-                      KF5::PlasmaQuick)
-                      
+                      Qt::Core
+                      Qt::Qml
+                      Plasma::Plasma
+                      Plasma::PlasmaQuick)
+
 install(TARGETS lattetasksplugin DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/latte/private/tasks)
 install(FILES plugin/qmldir DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/latte/private/tasks)

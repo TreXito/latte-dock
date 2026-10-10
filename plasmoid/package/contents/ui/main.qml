@@ -5,16 +5,18 @@
 */
 
 import QtQuick 2.8
-import QtQuick.Layouts 1.1
+import QtQuick.Layouts
 
-import QtGraphicalEffects 1.0
+import Qt5Compat.GraphicalEffects
 
+import org.kde.ksvg 1.0 as KSvg
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.plasma5support 2.0 as P5S
+import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.taskmanager 0.1 as TaskManager
-import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
+import plasma.applet.org.kde.plasma.taskmanager as TaskManagerApplet
 
 import org.kde.activities 0.1 as Activities
 
@@ -31,7 +33,7 @@ import "../code/tools.js" as TaskTools
 import "../code/activitiesTools.js" as ActivitiesTools
 import "../code/ColorizerTools.js" as ColorizerTools
 
-Item {
+PlasmoidItem {
     id:root
     Layout.fillWidth: scrollingEnabled && !root.vertical
     Layout.fillHeight: scrollingEnabled && root.vertical
@@ -45,14 +47,6 @@ Item {
 
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft && !root.vertical
     LayoutMirroring.childrenInherit: true
-
-    property bool plasma515: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,15,0)
-    property bool plasma518: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,18,0)
-    property bool plasma520: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,20,0)
-    property bool plasmaGreaterThan522: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,21,75)
-    property bool plasmaAtLeast524: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,24,0)
-    property bool plasmaAtLeast525: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,24,75)
-    property bool plasmaAtLeast526: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,25,75)
 
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
     property bool disableAllWindowsFunctionality: plasmoid.configuration.hideAllTasks
@@ -281,9 +275,9 @@ Item {
     }
 
     /////
-    PlasmaCore.ColorScope{
-        id: colorScopePalette
-    }
+    //Kirigami.ColorSet {
+    //    id: colorScopePalette
+    //}
 
     ///UPDATE
     function updateListViewParent() {
@@ -548,9 +542,7 @@ Item {
             groupingLauncherUrlBlacklist = plasmoid.configuration.groupingLauncherUrlBlacklist;
 
             ///Plasma 5.9 enforce grouping at all cases
-            if (LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,9,0)) {
-                groupingWindowTasksThreshold = -1;
-            }
+            groupingWindowTasksThreshold = -1;
         }
     }
 
@@ -619,7 +611,7 @@ Item {
         Component.onCompleted: previousActivity = currentActivity;
     }
 
-    PlasmaCore.DataSource {
+    P5S.DataSource {
         id: mpris2Source
         engine: "mpris2"
         connectedSources: sources
@@ -840,7 +832,7 @@ Item {
 
 
         /// the current theme's panel
-        PlasmaCore.FrameSvgItem{
+        KSvg.FrameSvgItem{
             id: shadowsSvgItem
 
             anchors.bottom: (root.location === PlasmaCore.Types.BottomEdge) ? belower.bottom : undefined
@@ -870,7 +862,7 @@ Item {
             }
 
 
-            PlasmaCore.FrameSvgItem{
+            KSvg.FrameSvgItem{
                 anchors.margins: belower.width-1
                 anchors.fill:parent
                 imagePath: plasmoid.configuration.transparentPanel ? "translucent/widgets/panel-background" :
@@ -1297,22 +1289,14 @@ Item {
     }
 
     Component.onCompleted:  {
-        if (root.plasmaAtLeast525) {
-            root.activateWindowView.connect(backend.activateWindowView);
-        } else {
-            root.presentWindows.connect(backend.presentWindows);
-        }
+        root.activateWindowView.connect(backend.activateWindowView);
 
         root.windowsHovered.connect(backend.windowsHovered);
         updateListViewParent();
     }
 
     Component.onDestruction: {
-        if (root.plasmaAtLeast525) {
-            root.activateWindowView.disconnect(backend.activateWindowView);
-        } else {
-            root.presentWindows.disconnect(backend.presentWindows);
-        }
+        root.activateWindowView.disconnect(backend.activateWindowView);
 
         root.windowsHovered.disconnect(backend.windowsHovered);
     }

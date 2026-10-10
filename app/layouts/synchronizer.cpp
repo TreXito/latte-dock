@@ -26,10 +26,10 @@
 
 // Plasma
 #include <Plasma/Containment>
+#include <PlasmaActivities/Consumer>
+#include <PlasmaActivities/Controller>
 
 // KDE
-#include <KActivities/Consumer>
-#include <KActivities/Controller>
 #include <KWindowSystem>
 
 #define LAYOUTSINITINTERVAL 350
@@ -67,7 +67,7 @@ Synchronizer::Synchronizer(QObject *parent)
         }
     });
 
-    connect(m_manager->corona()->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged,
+    connect(m_manager->corona()->activitiesConsumer(), &KActivities::Consumer::activitiesChanged,
             this, [&]() {
         if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) {
             syncMultipleLayoutsToActivities();
@@ -156,8 +156,10 @@ QStringList Synchronizer::freeActivities()
 }
 
 QStringList Synchronizer::runningActivities()
-{   
-    return m_manager->corona()->activitiesConsumer()->runningActivities();
+{
+    //! Plasma 6 removed the running/stopped activity lifecycle, every activity
+    //! reported by the consumer is a usable (thus running) activity.
+    return m_manager->corona()->activitiesConsumer()->activities();
 }
 
 QStringList Synchronizer::freeRunningActivities()
@@ -515,21 +517,10 @@ void Synchronizer::pauseLayout(QString layoutName)
             return;
         }
 
-        QStringList appliedactivities = layout->appliedActivities();
-
-        if (layout && !appliedactivities.isEmpty()) {
-            int i = 0;
-
-            for (const auto &activityid : appliedactivities) {
-                //! Stopping the activities must be done asynchronous because otherwise
-                //! the activity manager cant close multiple activities
-                QTimer::singleShot(i * 1000, [this, activityid]() {
-                    m_activitiesController->stopActivity(activityid);
-                });
-
-                i = i + 1;
-            }
-        }
+        //! Plasma 6 removed the activity running/stopped lifecycle and with it
+        //! KActivities::Controller::stopActivity(). A layout can no longer be
+        //! paused by stopping its activities, the concept no longer exists.
+        Q_UNUSED(layoutName);
     }
 }
 
@@ -864,10 +855,8 @@ bool Synchronizer::switchToLayoutInMultipleModeBasedOnActivities(const QString &
     }
 
     if (!switchToActivity.isEmpty()) {
-        if (!m_manager->corona()->activitiesConsumer()->runningActivities().contains(switchToActivity)) {
-            m_activitiesController->startActivity(switchToActivity);
-        }
-
+        //! Plasma 6 removed startActivity()/stopActivity(); activities always
+        //! exist, so switching to one only requires setting it as current.
         m_activitiesController->setCurrentActivity(switchToActivity);
     }
 

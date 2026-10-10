@@ -20,13 +20,10 @@
 
 // Plasma
 #include <Plasma/Corona>
+#include <PlasmaQuick/SharedQmlEngine>
 
 // KDE
 #include <KAboutApplicationDialog>
-
-namespace KDeclarative {
-class QmlObjectSharedEngine;
-}
 
 namespace Plasma {
 class Corona;
@@ -193,6 +190,8 @@ private slots:
     void onScreenRemoved(QScreen *screen);
     void onScreenCountChanged();
     void onScreenGeometryChanged(const QRect &geometry);
+    void onAvailableScreenRegionChangedFrom(Latte::View *view);
+    void onAvailableScreenRectChangedFrom(Latte::View *view);
     void syncLatteViewsToScreens();
 
 private:
@@ -226,7 +225,7 @@ private:
     QString m_startupAddViewTemplateName;
     QString m_importFullConfigurationFile;
 
-    QList<KDeclarative::QmlObjectSharedEngine *> m_alternativesObjects;
+    QList<PlasmaQuick::SharedQmlEngine *> m_alternativesObjects;
 
     QTimer m_viewsScreenSyncTimer;
 

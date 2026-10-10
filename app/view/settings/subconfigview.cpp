@@ -16,9 +16,11 @@
 #include "../../shortcuts/shortcutstracker.h"
 #include "../../wm/abstractwindowinterface.h"
 
+// Qt
+#include <QQmlEngine>
+
 // KDE
 #include <KLocalizedContext>
-#include <KDeclarative/KDeclarative>
 #include <KWayland/Client/plasmashell.h>
 #include <KWayland/Client/surface.h>
 #include <KWindowSystem>
@@ -114,12 +116,9 @@ void SubConfigView::init()
         rootContext()->setContextProperty(QStringLiteral("themeExtended"), m_corona->themeExtended());
     }
 
-    KDeclarative::KDeclarative kdeclarative;
-    kdeclarative.setDeclarativeEngine(engine());
-    kdeclarative.setTranslationDomain(QStringLiteral("latte-dock"));
-    kdeclarative.setupContext();
-    kdeclarative.setupEngine(engine());
-
+    KLocalizedContext *context = new KLocalizedContext(engine());
+    context->setTranslationDomain(QStringLiteral("latte-dock"));
+    engine()->rootContext()->setContextObject(context);
 }
 
 Qt::WindowFlags SubConfigView::wFlags() const
@@ -324,7 +323,7 @@ void SubConfigView::updateWaylandId()
     }
 }
 
-Plasma::FrameSvg::EnabledBorders SubConfigView::enabledBorders() const
+KSvg::FrameSvg::EnabledBorders SubConfigView::enabledBorders() const
 {
     return m_enabledBorders;
 }

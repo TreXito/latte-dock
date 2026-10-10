@@ -16,15 +16,24 @@
 #include <QIcon>
 #include <QString>
 
-//! KActivities
-#include <KActivities/Info>
-
 namespace Latte {
 namespace Data {
 
 class Activity : public Generic
 {
 public:
+    //! Plasma 6 removed KActivities::Info::State, activities no longer have a
+    //! running/stopped lifecycle. Keep the same notion locally so that the
+    //! delegates can still distinguish real activities (always Running) from
+    //! the synthetic "All/Free/Current" entries (Stopped).
+    enum State {
+        Invalid,
+        Stopped,
+        Running,
+        Starting,
+        Stopping
+    };
+
     Activity();
     Activity(Activity &&o);
     Activity(const Activity &o);
@@ -32,7 +41,7 @@ public:
     //! Layout data
     bool isCurrent{false};
     QString icon;
-    KActivities::Info::State state;
+    State state{Invalid};
 
     bool isValid() const;
     bool isRunning() const;

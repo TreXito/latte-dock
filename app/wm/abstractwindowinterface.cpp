@@ -18,7 +18,7 @@
 
 // KDE
 #include <KWindowSystem>
-#include <KActivities/Controller>
+#include <PlasmaActivities/Controller>
 
 namespace Latte {
 namespace WindowSystem {
@@ -47,7 +47,7 @@ AbstractWindowInterface::AbstractWindowInterface(QObject *parent)
 
     connect(&m_windowWaitingTimer, &QTimer::timeout, this, [&]() {
         WindowId wid = m_windowChangedWaiting;
-        m_windowChangedWaiting = QVariant();
+        m_windowChangedWaiting = WindowId::nil();
         emit windowChanged(wid);
     });
 
@@ -364,38 +364,40 @@ void AbstractWindowInterface::windowRemovedSlot(WindowId wid)
 //! Activities switching
 void AbstractWindowInterface::switchToNextActivity()
 {
-    QStringList runningActivities = m_activities->activities(KActivities::Info::State::Running);
-    if (runningActivities.count() <= 1) {
+    //! Plasma 6 removed the running/stopped activity lifecycle, so iterate the
+    //! existing activities reported by the consumer.
+    QStringList activities = m_activities->activities();
+    if (activities.count() <= 1) {
         return;
     }
 
-    int curPos = runningActivities.indexOf(m_currentActivity);
+    int curPos = activities.indexOf(m_currentActivity);
     int nextPos = curPos + 1;
 
-    if (curPos == runningActivities.count() -1) {
+    if (curPos == activities.count() -1) {
         nextPos = 0;
     }
 
     KActivities::Controller activitiesController;
-    activitiesController.setCurrentActivity(runningActivities.at(nextPos));
+    activitiesController.setCurrentActivity(activities.at(nextPos));
 }
 
 void AbstractWindowInterface::switchToPreviousActivity()
 {
-    QStringList runningActivities = m_activities->activities(KActivities::Info::State::Running);
-    if (runningActivities.count() <= 1) {
+    QStringList activities = m_activities->activities();
+    if (activities.count() <= 1) {
         return;
     }
 
-    int curPos = runningActivities.indexOf(m_currentActivity);
+    int curPos = activities.indexOf(m_currentActivity);
     int nextPos = curPos - 1;
 
     if (curPos == 0) {
-        nextPos = runningActivities.count() - 1;
+        nextPos = activities.count() - 1;
     }
 
     KActivities::Controller activitiesController;
-    activitiesController.setCurrentActivity(runningActivities.at(nextPos));
+    activitiesController.setCurrentActivity(activities.at(nextPos));
 }
 
 //! Delay window changed triggering

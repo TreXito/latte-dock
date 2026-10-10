@@ -7,6 +7,8 @@
 import QtQuick 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Templates 2.2 as T
+import org.kde.ksvg 1.0 as KSvg
+import org.kde.kirigami 2.20 as Kirigami
 import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte.components 1.0 as LatteComponents
@@ -52,10 +54,10 @@ T.CheckDelegate {
             visible: !isSeparator && icon && (!control.iconOnlyWhenHovered || (control.iconOnlyWhenHovered && control.isHovered))
             color: control.iconToolTip && iconMouseArea.containsMouse ? theme.highlightColor : "transparent"
 
-            PlasmaCore.IconItem {
+            Kirigami.Icon {
                 id: iconElement
                 anchors.fill: parent
-                colorGroup: PlasmaCore.Theme.ButtonColorGroup
+                Kirigami.Theme.colorSet: Kirigami.Theme.Button
                 source: control.icon
             }
 

@@ -15,7 +15,11 @@
 
 // Qt
 #include <QAbstractTableModel>
+#include <QHash>
 #include <QModelIndex>
+
+// Plasma Activities
+#include <PlasmaActivities/Info>
 
 
 namespace Latte {

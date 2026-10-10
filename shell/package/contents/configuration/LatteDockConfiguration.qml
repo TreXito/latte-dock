@@ -5,17 +5,16 @@
 */
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
 import QtQuick.Controls 2.12 as QtQuickControls212
 import QtQuick.Layouts 1.3
-import QtGraphicalEffects 1.0
+import Qt5Compat.GraphicalEffects
 import QtQuick.Window 2.2
 
+import org.kde.ksvg 1.0 as KSvg
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
-import QtQuick.Controls.Styles.Plasma 2.0 as Styles
 
 import org.kde.kquickcontrolsaddons 2.0 as KQuickControlAddons
 
@@ -119,7 +118,7 @@ Loader {
             userScaleHeight = universalSettings.screenHeightScale(latteView.positioner.currentScreenName);
         }
 
-        PlasmaCore.FrameSvgItem{
+        KSvg.FrameSvgItem{
             id: backgroundFrameSvgItem
             anchors.fill: parent
             imagePath: "dialogs/background"
@@ -184,12 +183,12 @@ Loader {
 
                     readonly property int trademarkHeight: 48
 
-                    PlasmaCore.SvgItem{
+                    KSvg.SvgItem{
                         id: latteTrademark
                         width: Qt.application.layoutDirection !== Qt.RightToLeft ? Math.ceil(1.70 * height) : height
                         height: trademark.height
 
-                        svg: PlasmaCore.Svg{
+                        svg: KSvg.Svg{
                             imagePath: Qt.application.layoutDirection !== Qt.RightToLeft ? universalSettings.trademarkPath() : universalSettings.trademarkIconPath()
                         }
                     }
@@ -384,7 +383,7 @@ Loader {
                     border.color: dialog.borderColor
                 }
 
-                PlasmaExtras.ScrollArea {
+                PlasmaComponents.ScrollView {
                     id: scrollArea
 
                     anchors.fill: parent

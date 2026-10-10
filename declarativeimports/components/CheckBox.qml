@@ -3,8 +3,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-import org.kde.plasma.components 2.0 as PlasmaComponents
-import "private" as Private
+import org.kde.plasma.components 3.0 as PlasmaComponents
 
 PlasmaComponents.CheckBox {
     property int value: 0
@@ -16,7 +15,4 @@ PlasmaComponents.CheckBox {
             checked = value;
         }
     }
-
-    style: Private.CheckBoxStyle {}
 }
-

@@ -5,6 +5,8 @@
 
 import QtQuick 2.7
 import QtQuick.Templates 2.0 as T
+import org.kde.ksvg 1.0 as KSvg
+import org.kde.kirigami 2.20 as Kirigami
 import org.kde.plasma.core 2.0 as PlasmaCore
 import "private" as Private
 
@@ -29,13 +31,13 @@ T.Slider {
     readonly property bool minimumInternalValueIsSet: (minimumInternalValue!==from && minimumInternalValue !== -10000)
     property int minimumInternalValue: -10000
 
-    PlasmaCore.Svg {
+    KSvg.Svg {
         id: grooveSvg
         imagePath: "widgets/slider"
-        colorGroup: PlasmaCore.ColorScope.colorGroup
+        colorGroup: Kirigami.Theme.colorSet
     }
 
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: minimumValueGroove
         imagePath: "widgets/slider"
         prefix: "groove-highlight"
@@ -81,7 +83,7 @@ T.Slider {
             shadowElement: parent.horizontal ? "horizontal-slider-shadow" : "vertical-slider-shadow"
             state: control.activeFocus ? "focus" : (control.hovered ? "hover" : "shadow")
         }
-        PlasmaCore.SvgItem {
+        KSvg.SvgItem {
             id: firstHandle
             anchors.fill: parent
             svg: grooveSvg
@@ -89,7 +91,7 @@ T.Slider {
         }
     }
 
-    background: PlasmaCore.FrameSvgItem {
+    background: KSvg.FrameSvgItem {
         imagePath: "widgets/slider"
         prefix: "groove"
         readonly property bool horizontal: control.orientation === Qt.Horizontal
@@ -100,7 +102,7 @@ T.Slider {
         anchors.centerIn: parent
         scale: horizontal && control.mirrored ? -1 : 1
 
-        PlasmaCore.FrameSvgItem {
+        KSvg.FrameSvgItem {
             id: grooveHighlight
             imagePath: "widgets/slider"
             prefix: "groove-highlight"

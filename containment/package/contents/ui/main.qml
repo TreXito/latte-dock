@@ -7,10 +7,11 @@
 import QtQuick 2.8
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
-import QtGraphicalEffects 1.0
+import Qt5Compat.GraphicalEffects
 
+import org.kde.kirigami 2.20 as Kirigami
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
 import org.kde.plasma.plasmoid 2.0
 
@@ -29,7 +30,7 @@ import "layouts" as Layouts
 import "./background" as Background
 import "./debugger" as Debugger
 
-Item {
+ContainmentItem {
     id: root
     objectName: "containmentViewLayout"
 
@@ -196,9 +197,6 @@ Item {
     property bool userShowPanelBackground: LatteCore.WindowSystem.compositingActive ? plasmoid.configuration.useThemePanel : true
     property bool useThemePanel: noApplets === 0 || !LatteCore.WindowSystem.compositingActive ?
                                      true : (plasmoid.configuration.useThemePanel || plasmoid.configuration.solidBackgroundForMaximized)
-
-    property bool plasma515: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,15,0)
-    property bool plasma518: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,18,0)
 
     readonly property int minAppletLengthInConfigure: 16
     readonly property int maxJustifySplitterSize: 64
@@ -744,9 +742,9 @@ Item {
 
     ///////////////END components
 
-    PlasmaCore.ColorScope{
-        id: colorScopePalette
-    }
+    //Kirigami.ColorSet{
+    //    id: colorScopePalette
+    //}
 
     LatteContainment.LayoutManager{
         id:fastLayoutManager

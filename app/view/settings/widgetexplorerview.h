@@ -15,15 +15,14 @@
 #include <QPointer>
 #include <QTimer>
 
-// Plasma
-#include <plasma/package.h>
-#include <Plasma/FrameSvg>
+// KF
+#include <Plasma/Plasma>
+#include <KSvg/FrameSvg>
 
 
 namespace Plasma {
 class Applet;
 class Containment;
-class FrameSvg;
 class Types;
 }
 
@@ -82,7 +81,7 @@ private:
     QRect m_geometryWhenVisible;
 
     //only for the mask on disabled compositing, not to actually paint
-    Plasma::FrameSvg *m_background{nullptr};
+    KSvg::FrameSvg *m_background{nullptr};
 };
 
 }

@@ -6,13 +6,13 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.1
-import QtGraphicalEffects 1.0
+import Qt5Compat.GraphicalEffects
 
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
+import plasma.applet.org.kde.plasma.taskmanager as TaskManagerApplet
 
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.private.tasks 0.1 as LatteTasks
@@ -434,18 +434,10 @@ AbilityItem.BasicItem {
             activateLauncher();
         } else{
             if (model.IsGroupParent) {
-                if (root.plasmaAtLeast525) {
-                    //! At least Plasma 5.25 case
-                    var isWindowViewAvailable = LatteCore.WindowSystem.compositingActive && backend.windowViewAvailable;
-                    if (isWindowViewAvailable) {
-                        root.activateWindowView(model.WinIdList);
-                    }
-                } else {
-                    //! Plasma 5.24 case
-                    var isPresentWindowsAvailable = LatteCore.WindowSystem.compositingActive && backend.canPresentWindows;
-                    if (isPresentWindowsAvailable) {
-                        root.presentWindows(model.WinIdList);
-                    }
+                //! At least Plasma 5.25 case
+                var isWindowViewAvailable = LatteCore.WindowSystem.compositingActive && backend.windowViewAvailable;
+                if (isWindowViewAvailable) {
+                    root.activateWindowView(model.WinIdList);
                 }
             } else {
                 if (windowsPreviewDlg.visible) {
@@ -512,7 +504,7 @@ AbilityItem.BasicItem {
         }
 
         toolTipDelegate.windows = Qt.binding(function() {
-            return root.plasma515 ? model.WinIdList : model.LegacyWinIdList ;
+            return model.WinIdList;
         });
         toolTipDelegate.isGroup = Qt.binding(function() {
             return model.IsGroupParent == true;
