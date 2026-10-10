@@ -1174,7 +1174,9 @@ QStringList View::activities() const
 {
     QStringList running;
 
-    QStringList runningAll = m_corona->activitiesConsumer()->runningActivities();
+    //! Plasma 6 has no running/stopped activity lifecycle, all existing
+    //! activities are usable.
+    QStringList runningAll = m_corona->activitiesConsumer()->activities();
 
     for(int i=0; i<m_activities.count(); ++i) {
         if (runningAll.contains(m_activities[i])) {
@@ -1300,10 +1302,10 @@ void View::setLayout(Layout::GenericLayout *layout)
         });
 
         if (latteCorona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
-            connectionsLayout << connect(latteCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
+            connectionsLayout << connect(latteCorona->activitiesConsumer(), &KActivities::Consumer::activitiesChanged, this, [&]() {
                 if (m_layout && m_visibility) {
                     setActivities(m_layout->appliedActivities());
-                    qDebug() << "DOCK VIEW FROM LAYOUT (runningActivitiesChanged) ::: " << m_layout->name()
+                    qDebug() << "DOCK VIEW FROM LAYOUT (activitiesChanged) ::: " << m_layout->name()
                              << " - activities: " << m_activities;
                 }
             });
